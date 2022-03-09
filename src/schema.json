@@ -5,6 +5,10 @@
       "type": "string",
       "minLength": 1
     },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
     "description": {
       "title": "Long Description",
       "type": "string"
@@ -26,7 +30,18 @@
     },
     "recurrence_interval": {
       "type": "integer"
+    },
+    "include_gift": {
+      "type": "boolean",
+      "price": 60
     }
   },
-  "required": ["name", "due_date"]
+  "required": ["name", "email,", "due_date"],
+  "errorMessage": {
+    "properties": {
+      "name": "Required Field",
+      "email": "Must provide a valid email address",
+      "due_date": "Must set due date"
+    }
+  }
 }

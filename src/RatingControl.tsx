@@ -7,11 +7,14 @@ interface RatingControlProps {
   path: string;
 }
 
-const RatingControl = ({ data, handleChange, path }: RatingControlProps) => (
-  <Rating
-    value={data}
-    updateValue={(newValue: number) => handleChange(path, newValue)}
-  />
-);
+const RatingControl = (props: RatingControlProps) => {
+  const { data, handleChange, path } = props;
+  return (
+    <Rating
+      value={data}
+      updateValue={(newValue: number) => handleChange(path, newValue)}
+    />
+  );
+};
 
 export default withJsonFormsControlProps(RatingControl);

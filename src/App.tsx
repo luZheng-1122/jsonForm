@@ -1,5 +1,6 @@
 import { Fragment, useState, useMemo } from 'react';
 import { JsonForms } from '@jsonforms/react';
+import { createAjv, ValidationMode } from '@jsonforms/core';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -14,6 +15,13 @@ import {
 import RatingControl from './RatingControl';
 import ratingControlTester from './ratingControlTester';
 import { makeStyles } from '@mui/styles';
+import MyGroupRenderer, { myGroupTester } from './MyGroup';
+import CheckBoxWithPriceControl, {
+  checkBoxWithPriceControlTester,
+} from './CheckBoxPriceControl';
+import InputWithErrorControl, {
+  InputWithErrorControlTester,
+} from './InputWithErrorControl';
 
 const useStyles = makeStyles({
   container: {
@@ -42,7 +50,7 @@ const useStyles = makeStyles({
 });
 
 const initialData = {
-  name: 'Send email to Adrian',
+  name: '',
   description: 'Confirm if you have passed the subject\nHereby ...',
   done: true,
   recurrence: 'Daily',
@@ -53,13 +61,25 @@ const renderers = [
   ...materialRenderers,
   //register custom renderers
   { tester: ratingControlTester, renderer: RatingControl },
+  { tester: myGroupTester, renderer: MyGroupRenderer },
+  {
+    tester: checkBoxWithPriceControlTester,
+    renderer: CheckBoxWithPriceControl,
+  },
+  {
+    tester: InputWithErrorControlTester,
+    renderer: InputWithErrorControl,
+  },
 ];
 
 const App = () => {
   const classes = useStyles();
   const [data, setData] = useState<any>(initialData);
   const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
-
+  const [validationMode, setValidationMode] =
+    useState<ValidationMode>('NoValidation');
+  const ajv = createAjv({ allErrors: true });
+  require('ajv-errors')(ajv);
   const clearData = () => {
     setData({});
   };
@@ -107,7 +127,16 @@ const App = () => {
               data={data}
               renderers={renderers}
               cells={materialCells}
-              onChange={({ errors, data }) => setData(data)}
+              onChange={({ errors, data }) => {
+                setData(data);
+                console.log('on change', errors, data);
+                // TODO: compare data and initial data
+                if (data.name !== '') {
+                  setValidationMode('ValidateAndShow');
+                }
+              }}
+              ajv={ajv}
+              validationMode={validationMode}
             />
           </div>
         </Grid>

@@ -1,5 +1,6 @@
 {
-  "type": "VerticalLayout",
+  "type": "Group",
+  "label": "My Group",
   "elements": [
     {
       "type": "Control",
@@ -8,7 +9,14 @@
     },
     {
       "type": "Control",
-      "scope": "#/properties/name"
+      "scope": "#/properties/name",
+      "messages": {
+        "maxLength": "This person is too young"
+      }
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/email"
     },
     {
       "type": "HorizontalLayout",
@@ -50,6 +58,10 @@
       "options": {
         "multi": true
       }
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/include_gift"
     }
   ]
 }

@@ -29,3 +29,17 @@ JSON Forms is rendered by importing and using the `JsonForms` component and dire
 ## Custom renderers
 
 Please see [our corresponding tutorial](https://jsonforms.io/docs/tutorial) on how to add custom renderers.
+
+## Features of JSON Forms:
+
+1. Define form fields and UI elements separately in `schema.json` and `uischema.json`. When you want to edit the form, you just need to change the two json files.
+2. Validate fields with `ajv-format` and `ajv-errors`, able to customise error messages
+3. Customise input fileds UI with `custom renderers`, you can reuse the props from `Json Form React package` and rewrite the input fields UI by your own.
+4. use `validationMode` to control when you want to validate the form and when not to.
+   [validation mode](https://github.com/eclipsesource/jsonforms/pull/1611)
+
+- save performance by never validating on client side
+- show validation errors separately from the form (customise your error message by passing `errors={[]}` to your custom UI controler)
+- only show validation errors on submit or after first edit
+
+If you would like to show the error message only to the input fileds that are editting, you probably need to store the `onChange errors and data` in a global state (redux or context), and control the error message in your `custom renderer`.
